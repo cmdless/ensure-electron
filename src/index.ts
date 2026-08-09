@@ -112,12 +112,7 @@ export function getDefaultBuildPath(meta: ImportMeta) {
   if (!packagePath)
     throw new Error(`Failed to findPackageJSON package.json from ${meta.url}`);
 
-  const parent = path.dirname(packagePath);
-  const buildPath = path.join(parent, 'node_modules');
-  if (!fs.existsSync(buildPath))
-    throw new Error(`node_modules not found sibling to ${packagePath}`);
-
-  return buildPath;
+  return path.dirname(packagePath);
 }
 
 export type EnsureElectronRequest = {
