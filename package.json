@@ -1,0 +1,38 @@
+{
+  "name": "@cmdless/ensure-electron",
+  "version": "0.0.2",
+  "license": "MIT",
+  "type": "module",
+  "description": "Facilitates installing a centralized Electron binary and building native app dependencies all at runtime, allowing for Electron apps to be run over CLI.",
+  "author": {
+    "name": "Fluttershy",
+    "url": "https://github.com/Fluttershy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmdless/ensure-electron.git"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@electron/get": "5.1.0",
+    "@electron/rebuild": "4.2.0",
+    "extract-zip": "2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "25.9.3",
+    "typescript": "^5.8.0"
+  }
+}
