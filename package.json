@@ -1,6 +1,6 @@
 {
   "name": "@cmdless/ensure-electron",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "type": "module",
   "description": "Facilitates installing a centralized Electron binary and building native app dependencies all at runtime, allowing for Electron apps to be run over CLI.",
@@ -29,7 +29,7 @@
   "dependencies": {
     "@electron/get": "5.1.0",
     "@electron/rebuild": "4.2.0",
-    "extract-zip": "2.0.1"
+    "@electron-internal/extract-zip": "1.0.5"
   },
   "devDependencies": {
     "@types/node": "25.9.3",

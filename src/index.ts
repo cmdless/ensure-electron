@@ -4,7 +4,7 @@ import os from 'node:os';
 import { findPackageJSON } from "node:module";
 import { download, ElectronDownloadCacheMode, type ElectronDownloadRequestOptions } from '@electron/get';
 import { rebuild, type RebuildOptions } from '@electron/rebuild';
-import extract from 'extract-zip';
+import extract from '@electron-internal/extract-zip';
 
 function getInstallPath(version: string, runtimesRoot: string) {
   return path.join(
