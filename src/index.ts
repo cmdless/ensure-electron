@@ -6,9 +6,15 @@ import { download, ElectronDownloadCacheMode, type ElectronDownloadRequestOption
 import { rebuild, type RebuildOptions } from '@electron/rebuild';
 import extract from '@electron-internal/extract-zip';
 
-function getInstallPath(version: string, runtimesRoot: string) {
+export function getDefaultCmdlessRoot() {
+  return process.env.CMDLESS_ROOT
+    ?? path.join(os.homedir(), '.cmdless');
+}
+
+function getInstallPath(version: string, cmdlessRoot: string) {
   return path.join(
-    runtimesRoot,
+    cmdlessRoot,
+    'runtimes',
     'electron',
     version,
     `${process.platform}-${process.arch}`
@@ -34,12 +40,12 @@ function getExecutablePath(installPath: string) {
 
 export type InstallElectronRequest = {
   electronVersion: string;
-  runtimesRoot: string;
+  cmdlessRoot: string;
   downloadOptions?: Omit<ElectronDownloadRequestOptions, 'cacheMode'>;
 };
 
-export async function installElectron({ electronVersion, runtimesRoot, downloadOptions }: InstallElectronRequest) {
-  const installPath = getInstallPath(electronVersion, runtimesRoot);
+export async function installElectron({ electronVersion, cmdlessRoot, downloadOptions }: InstallElectronRequest) {
+  const installPath = getInstallPath(electronVersion, cmdlessRoot);
   const executablePath = getExecutablePath(installPath);
 
   if (fs.existsSync(executablePath))
@@ -118,7 +124,7 @@ export function getDefaultBuildPath(meta: ImportMeta) {
 export type EnsureElectronRequest = {
   meta: ImportMeta;
   electronVersion?: string;
-  runtimesRoot?: string;
+  cmdlessRoot?: string;
   downloadOptions?: Omit<ElectronDownloadRequestOptions, 'cacheMode'>;
   rebuild?: boolean;
   buildPath?: string;
@@ -127,13 +133,13 @@ export type EnsureElectronRequest = {
 
 export async function ensureElectron(request: EnsureElectronRequest) {
   request.electronVersion ||= await getDefaultElectronVersion(request.meta);
-  request.runtimesRoot ||= getDefaultRuntimesRoot();
+  request.cmdlessRoot ||= getDefaultCmdlessRoot();
   request.downloadOptions ||= {};
   request.buildPath ||= getDefaultBuildPath(request.meta);
   request.rebuildOptions ||= {};
 
-  const { electronVersion, runtimesRoot, downloadOptions, buildPath, rebuildOptions } = request;
-  const executablePath = await installElectron({ electronVersion, runtimesRoot, downloadOptions });
+  const { electronVersion, cmdlessRoot, downloadOptions, buildPath, rebuildOptions } = request;
+  const executablePath = await installElectron({ electronVersion, cmdlessRoot, downloadOptions });
 
   if (request.rebuild)
     await rebuildElectron({ electronVersion, buildPath, rebuildOptions });
